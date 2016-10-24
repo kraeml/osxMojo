@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Icon=/vagrant/mojo-loader-1.2.2/icon.png
+Icon=/vagrant/opt/mojo-loader/icon.png
 Name=Mojo Loader
 Comment=Mojo Loader
 Categories=Development
-Exec=/vagrant/mojo-loader-1.2.2/mojo-loader
+Exec=/vagrant/opt/mojo-loader/mojo-loader
 StartupNotify=true
 Terminal=false

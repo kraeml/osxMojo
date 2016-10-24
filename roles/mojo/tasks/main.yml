@@ -1,8 +1,53 @@
 - name: Install openjdk
   apt: name=openjdk-7-jre-headless state=latest
 
+- name: Download Mojo loader
+  get_url:
+    url="https://embeddedmicro.com/media/wysiwyg/mojo-loader/{{ mojo_loader_pkg }}"
+    dest="/vagrant/opt/{{ mojo_loader_pkg }}"
+  ignore_errors: yes # Don't fail after Mojo version update
+
+- name: Untar Mojo loader
+  #unarchive:
+  #   src="/vagrant/opt/{{ mojo_loader_pkg }}"
+  #   dest="/vagrant/opt/"
+  shell: "cd /vagrant/opt ; tar -zxvf {{ mojo_loader_pkg }}"
+  ignore_errors: yes
+
+- name: Create mojo loader symlink
+  file:
+    src=/vagrant/opt/{{ mojo_loader_dir }}-1.3.0
+    dest=/vagrant/opt/{{ mojo_loader_dir }}
+    state=link
+
+- name: Download Mojo IDE
+  get_url:
+    url="https://embeddedmicro.com/ide/{{ mojo_ide_pkg }}"
+    dest="/vagrant/opt/{{ mojo_ide_pkg }}"
+  ignore_errors: yes
+
+- name: Untar Mojo IDE
+  #  unarchive:
+  #    src="/vagrant/opt/{{ mojo_ide_pkg }}"
+  #    dest="/vagrant/opt/"
+  shell: "cd /vagrant/opt ; tar -zxvf {{ mojo_ide_pkg }}"
+  ignore_errors: yes
+
+- name: Create mojo IDE symlink
+  file:
+    src=/vagrant/opt/{{ mojo_ide_dir }}-B1.3.4
+    dest=/vagrant/opt/{{ mojo_ide_dir }}
+    state=link
+
+- name: Update .bashrc path with Mojo IDE
+  lineinfile:
+    dest=".bashrc"
+    line="export PATH=$PATH:/vagrant/mojo-ide:/vagrant/mojo-ide-B1.3.4"
+
+
 - name: copy mojo udev rules
-  copy: src=mojo-loader-1.2.2/driver/99-mojo.rules dest=/etc/udev/rules.d/99-mojo.rules
+  shell: "cp /vagrant/opt/mojo-loader/driver/99-mojo.rules /etc/udev/rules.d/"
+  notify: "udev restart"
 
 - name: add vagrant to dialout group
   user: name=vagrant groups=dialout append=yes
@@ -10,7 +55,7 @@
 - name: copy mojo loader desktop launcher
   copy: src=roles/mojo/files/mojo_loader.desktop dest=/home/vagrant/Desktop/
 
-- name: update .bashrc path with Mojo loader
+- name: update .bashrc path with Mojo IDE and loader
   lineinfile:
     dest=.bashrc
-    line="export PATH=$PATH:/vagrant/mojo-ide:/vagrant/mojo-loader-1.2.2"
+    line="export PATH=$PATH:/vagrant/opt/mojo-ide:/vagrant/opt/mojo-ide/tools/bin:/vagrant/opt/mojo-loader"

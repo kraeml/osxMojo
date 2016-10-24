@@ -3,4 +3,5 @@
   roles:
     - common
     - ise
+    - cable_drivers
     - mojo

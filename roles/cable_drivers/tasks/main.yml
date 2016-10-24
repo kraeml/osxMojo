@@ -1,0 +1,8 @@
+---
+
+- name: Install fxload
+  apt: name=fxload state=latest
+
+- name: Install Xilinx cable drivers
+  copy: src=roles/cable_drivers/files/99-xusbdfwu.rules dest=/etc/udev/rules.d owner=root group=root
+  notify: "udev restart"

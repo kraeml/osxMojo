@@ -22,11 +22,11 @@ Vagrant.configure(2) do |config|
     v.gui = true
 
     # Set how much memory and CPU cores to use
-    v.memory = 2048
+    v.memory = 4096
     v.cpus = 2
 
     # Give it some more video memory, since it's running a gui
-    v.customize ["modifyvm", :id, "--vram", "32"]
+    v.customize ["modifyvm", :id, "--vram", "64"]
 
     # Enable USB
     # v.customize ['modifyvm', 'add', '0', '--target', :id, '--name', 'Xilinx Platform Cable USB II', '--vendorid', '0x03fd', '--productid', '0x0013', 'on']

@@ -4,6 +4,9 @@
 - name: Install xfce4
   apt: name=xfce4 state=latest
 
+- name: Install Virtualbox guest additions
+  apt: name=virtualbox-guest-additions-iso state=latest
+
 - name: allow any user to startx
   replace: dest=/etc/X11/Xwrapper.config regexp='allowed_users=.*$' replace='allowed_users=anybody' backup=yes
 

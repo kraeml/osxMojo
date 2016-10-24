@@ -25,3 +25,13 @@ osxMojo is a full development environment for the Mojo v3 development board (htt
 	* Make sure you set the installation path to */vagrant/opt/Xilinx*
 1. Once the installation is complete, you should be able to run ISE from the desktop icon!
 	* *Note:* You are now able to do `vagrant destroy` and `vagrant up` again without needing to re-install ISE, since we installed it in the /vagrant/opt directory, which is on the shared folder
+
+### Note
+* If you have X11 / XQuartz installed on OS X, it is possible to run the Xilinx and Mojo ISE headless.  First, SSH to the machine with X11 forwarding enabled.  Use the private key from the Vagrant box:
+```
+	ssh -i ${osxMojo_Installdir}/.vagrant/machines/default/virtualbox/private_key vagrant@localhost -p 2222 -X
+```
+	Now start your tools from the shell.  E.g.:
+```
+	vagrant@osxMojo:~$ ise &
+```

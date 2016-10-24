@@ -13,9 +13,14 @@
   copy: src=roles/ise/files/Xilinx.lic dest=/home/vagrant/.Xilinx/ owner=vagrant group=vagrant
   when: result.stat.exists == True
 
-- name: update .bashrc
-  blockinfile:
-    dest: .bashrc
-    block: |
-        export PATH=$PATH:/vagrant/mojo-ide:/vagrant/mojo-loader-1.2.2
-        source /vagrant/opt/Xilinx/14.7/ISE_DS/settings64.sh > /dev/null
+- name: update .bashrc with Xilinx IDE settings
+  lineinfile:
+    dest=.bashrc
+    line="source /vagrant/opt/Xilinx/14.7/ISE_DS/settings64.sh > /dev/null"
+
+#- name: update .bashrc
+#  blockinfile:
+#    dest: .bashrc
+#    block: |
+#        export PATH=$PATH:/vagrant/mojo-ide:/vagrant/mojo-loader-1.2.2
+#        source /vagrant/opt/Xilinx/14.7/ISE_DS/settings64.sh > /dev/null

@@ -29,7 +29,9 @@ Vagrant.configure(2) do |config|
     v.customize ["modifyvm", :id, "--vram", "32"]
 
     # Enable USB
+    # v.customize ['modifyvm', 'add', '0', '--target', :id, '--name', 'Xilinx Platform Cable USB II', '--vendorid', '0x03fd', '--productid', '0x0013', 'on']
     v.customize ['modifyvm', :id, '--usb', 'on']
+    v.customize ["modifyvm", :id, "--usbxhci", "on"]
 
     # Enable usb pass-through Mojo V3 and Mojo V3 Bootloader
     v.customize ['usbfilter', 'add', '0', '--target', :id, '--name', 'Mojo V3', '--vendorid', '0x29dd', '--productid', '0x8001']

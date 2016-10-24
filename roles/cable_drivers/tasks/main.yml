@@ -1,8 +1,34 @@
 ---
 
-- name: Install fxload
-  apt: name=fxload state=latest
+- name: Install cable driver tools
+  apt: name={{ item }} state=installed
+  with_items:
+    - libusb-dev
+    - build-essential
+    - libc6-dev-i386
+    - fxload
+    - git
 
 - name: Install Xilinx cable drivers
   copy: src=roles/cable_drivers/files/99-xusbdfwu.rules dest=/etc/udev/rules.d owner=root group=root
   notify: "udev restart"
+
+- git: repo=git://git.zerfleddert.de/usb-driver
+    dest=/vagrant/opt/usb-driver
+
+- name: compile usb-driver
+  shell: "cd /vagrant/opt/usb-driver && make"
+
+# Check this if the led on USB platform cable does not turn green...
+- name: Install Xilinx cable drivers
+  copy: src=roles/cable_drivers/files/99-xusbdfwu.rules dest=/etc/udev/rules.d owner=root group=root
+  notify: "udev restart"
+
+- name: update .bashrc with libusb-driver preloader
+  lineinfile:
+    dest=.bashrc
+    line="export LD_PRELOAD=/vagrant/opt/usb-driver/libusb-driver.so"
+
+- name: Post-install command
+  debug:
+    msg: "*** IMPORTANT!!! *** Run manually after ISE is installed:cd /vagrant/opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/ && sudo bash setup_pcusb"
